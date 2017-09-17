@@ -6,27 +6,27 @@
 #include<unordered_map>
 #include"event_object.h"
 namespace open{
-    typedef std::funcation<std::pair<int,std::shared_ptr<EventParameter>>(EventParameter)> EventFuncation
+    typedef std::shared_ptr<std::function<EventExParameter>(EventParameter)>> Eventfunction
     class EventDirver{
     public:
-        void pushEventFunc(std::shared_ptr<Event>,EventFuncation,
+        void pushEventFunc(std::shared_ptr<Event>,Eventfunction,
                                 const std::list<std::shared_ptr<Event>>);
         void pushEventObj(std::shared_ptr<Event>,std::shared_ptr<EventObject>,
                             const std::list<std::shared_ptr<Event>>);
-        void pushCircularEventFunc(std::shared_ptr<Event>,EventFuncation,
-                            const std::list<std::shared_ptr<Event>>,std::funcation<bool()>);
+        void pushCircularEventFunc(std::shared_ptr<Event>,Eventfunction,
+                            const std::list<std::shared_ptr<Event>>,std::function<bool()>);
         void pushCircularEventObj(std::shared_ptr<Event>,std::shared_ptr<EventObject>,
-                            const std::list<std::shared_ptr<Event>>,std::funcation<bool()>);
+                            const std::list<std::shared_ptr<Event>>,std::function<bool()>);
         void removeEvent(std::shared_ptr<Event>);
 
         void removeEventObj(std::shared_ptr<Event>,std::shared_ptr<EventObject>);
 
-        void removeEventFunc(std::shared_ptr<Event>, EventFuncation);
+        void removeEventFunc(std::shared_ptr<Event>, Eventfunction);
     private:
         std::unordered_map<std::shared_ptr<Event>,EventObjToObjs> eventObjMap;
-        std::unordered_map<EventFuncation,std::shared_ptr<EventObject>> funcToObj;
-        std::vector<std::funcation<void()>> task;
-        std::vector<std::funcation<void()>> prepareTask;
+        std::unordered_map<Eventfunction,std::shared_ptr<EventObject>> funcToObj;
+        std::vector<std::shared_ptr<Event>> events;
+        std::vector<std::shared_ptr<Event>> prepareEvents;
     };
 }
 #endif
